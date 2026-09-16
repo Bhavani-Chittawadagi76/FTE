@@ -1,6 +1,7 @@
 import json
+from pathlib import Path
 
-FILE = "data/enrollments.json"
+FILE = str(Path(__file__).resolve().parents[1] / "data" / "enrollments.json")
 
 def load_enrollments():
 

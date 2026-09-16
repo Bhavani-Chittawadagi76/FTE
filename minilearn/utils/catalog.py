@@ -1,31 +1,32 @@
 import json
+from pathlib import Path
+
+CATALOG_FILE = Path(__file__).resolve().parents[1] / "data" / "catalog.json"
+
 
 def load_catalog():
+    with CATALOG_FILE.open() as file:
+        return json.load(file)
 
-    with open("data/catalog.json") as f:
-        return json.load(f)
 
 def search_catalog(keyword):
-
-    catalog = load_catalog()
-
+    normalized_keyword = keyword.lower()
     results = []
-
-    for item in catalog:
-
-        if keyword.lower() in item["title"].lower():
-
+    title_matches = []
+    for item in load_catalog():
+        searchable = " ".join(
+            str(item.get(field, ""))
+            for field in ("title", "level", "description", "topics")
+        ).lower()
+        if normalized_keyword in searchable:
             results.append(item)
+            if normalized_keyword in item["title"].lower():
+                title_matches.append(item)
+    return title_matches + [item for item in results if item not in title_matches]
 
-    return results
 
 def get_course_details(course_id):
-
-    catalog = load_catalog()
-
-    for course in catalog:
-
-        if course["learningId"] == course_id:
-            return course
-
-    return None
+    return next(
+        (course for course in load_catalog() if course["learningId"] == course_id),
+        None,
+    )

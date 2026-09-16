@@ -1,0 +1,14 @@
+[
+  {
+    "learningId": "LRN001",
+    "title": "Machine Learning Basics",
+    "level": "Beginner",
+    "durationHours": 4
+  },
+  {
+    "learningId": "LRN002",
+    "title": "Python for AI",
+    "level": "Beginner",
+    "durationHours": 5
+  }
+]
